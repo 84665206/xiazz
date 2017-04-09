@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="PayMethodMapper" >
+  
+  
+  <sql id="Base_Column_List" >
+    id, pay_name, is_visit, pay_sort, pay_icon, parent_id, show_type, handle_class
+  </sql>
+  
+  <select id="selectPayMethodList" resultType="com.eshop.webapp.m.pay.model.PayMethod" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_method
+    where is_visit=1
+    ORDER BY pay_sort ASC
+  </select>
+  
+  <select id="selectPayMethodById" resultType="com.eshop.webapp.m.pay.model.PayMethod" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_method
+    where is_visit=1
+    and id = #{id}
+  </select>
+</mapper>

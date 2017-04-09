@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderGoodsMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, order_id, order_sn, sku_id, sku_name, sku_num, sale_price, share_price, sku_pic
+  </sql>
+  
+  <insert id="insertOrderGoods" parameterType="com.eshop.webapp.m.order.model.OrderGoods" useGeneratedKeys="true" keyProperty="id">
+    insert into ord_order_goods ( order_id, order_sn, 
+      sku_id, sku_name, sku_num, 
+      sale_price, share_price, sku_pic, 
+      memo, insert_time, insert_user, goods_code,
+      goods_origin, goods_shipping, goods_spec, goods_varieties,
+      goods_origin_name, goods_shipping_name, goods_spec_name, 
+      goods_varieties_name
+      )
+    values (#{order_id}, #{order_sn}, 
+      #{sku_id}, #{sku_name}, #{sku_num}, 
+      #{sale_price}, #{share_price}, #{sku_pic}, 
+      #{memo}, NOW(), #{insert_user}, #{goods_code},
+      #{goods_origin}, #{goods_shipping}, #{goods_spec}, #{goods_varieties},
+      #{goods_origin_name}, #{goods_shipping_name}, #{goods_spec_name}, 
+      #{goods_varieties_name}
+      )
+  </insert>
+  
+  <select id="selectOrderGoodsList" parameterType="map" resultType="com.eshop.webapp.m.order.model.OrderGoods">
+  	SELECT og.order_sn, og.sale_price, og.share_price, og.sku_name, og.sku_num, og.sku_pic, 
+	origin.attr_name goods_origin_name, shipping.attr_name goods_shipping_name, spec.attr_name goods_spec_name, 
+	varieties.attr_name goods_varieties_name
+	FROM ord_order_goods og
+	LEFT JOIN info_goods_sku g ON g.id=og.sku_id
+	LEFT JOIN info_goods_attribute origin ON origin.attr_code=g.goods_origin
+	LEFT JOIN info_goods_attribute shipping ON shipping.attr_code=g.goods_shipping
+	LEFT JOIN info_goods_attribute spec ON spec.attr_code=g.goods_spec
+	LEFT JOIN info_goods_attribute varieties ON varieties.attr_code=g.goods_varieties
+	where order_id = #{order_id}
+  </select>
+  
+</mapper>

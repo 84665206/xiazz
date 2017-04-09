@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderInfoMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, order_sn, order_status, add_time, order_type, shipping_level, shipping_way, shipping_status, 
+    customer_id, customer_name, recruit_code, shop_name, shop_address, customer_memo, 
+    goods_sum, goods_amount, order_shipping_fee, order_discount, order_amount, order_memo, 
+    pay_way, pay_status, pay_time, pay_amount, need_pay_amount, receiver_name, receiver_mobile, 
+    receiver_phone, receiver_state, receiver_province, receiver_city, receiver_district, 
+    receiver_street, receiver_addr, memo
+  </sql>
+  
+  <insert id="insertOrderInfo" parameterType="com.eshop.webapp.m.order.model.OrderInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ord_order_info (order_sn, order_status, 
+      add_time, order_type, shipping_level, 
+      shipping_way, shipping_status, customer_id, 
+      customer_name, recruit_code, shop_name, 
+      shop_address, customer_memo, goods_sum, 
+      goods_amount, order_shipping_fee, order_discount, 
+      order_amount, order_memo, pay_way, 
+      pay_status, pay_time, pay_amount, 
+      need_pay_amount, receiver_name, receiver_mobile, 
+      receiver_phone, receiver_state, receiver_province, 
+      receiver_city, receiver_district, receiver_street, 
+      receiver_addr, memo)
+    values (#{order_sn}, #{order_status}, 
+      NOW(), #{order_type}, #{shipping_level}, 
+      #{shipping_way}, #{shipping_status}, #{customer_id}, 
+      #{customer_name}, #{recruit_code}, #{shop_name}, 
+      #{shop_address}, #{customer_memo}, #{goods_sum}, 
+      #{goods_amount}, #{order_shipping_fee}, #{order_discount}, 
+      #{order_amount}, #{order_memo}, #{pay_way}, 
+      #{pay_status}, #{pay_time}, #{pay_amount}, 
+      #{need_pay_amount}, #{receiver_name}, #{receiver_mobile}, 
+      #{receiver_phone}, #{receiver_state}, #{receiver_province}, 
+      #{receiver_city}, #{receiver_district}, #{receiver_street}, 
+      #{receiver_addr}, #{memo})
+  </insert>
+  
+  <update id="updateOrderInfoOrderSn" parameterType="map">
+  	UPDATE ord_order_info SET order_sn = #{order_sn} WHERE id=#{id}
+  </update>
+  
+  <select id="selectOrderInfoByOrderSn" parameterType="map" resultType="com.eshop.webapp.m.order.model.OrderInfo">
+  	select <include refid="Base_Column_List" />
+  	FROM ord_order_info
+  	WHERE order_sn = #{order_sn}
+  </select>
+  
+  <select id="selectOrderInfoByOrderId" parameterType="map" resultType="com.eshop.webapp.m.order.model.OrderInfo">
+  	select <include refid="Base_Column_List" />
+  	FROM ord_order_info
+  	WHERE id = #{order_id}
+  </select>
+  
+  <select id="myOrderInfoList" parameterType="map" resultType="com.eshop.webapp.m.order.model.OrderInfo">
+  	select <include refid="Base_Column_List" />
+  	FROM ord_order_info
+  	<where>
+  		customer_id = #{customer_id}
+  	</where>
+  </select>
+ 
+</mapper>

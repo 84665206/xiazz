@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CustomerMapper" >
+  
+  
+  <sql id="Base_Column_List" >
+    id, customer_name, customer_pwd, customer_true_name, shop_name, shop_address, recruit_code
+  </sql>
+  
+  <select id="selectCustomerLoginInfo" resultType="com.eshop.webapp.m.customer.model.Customer" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_customer
+    where customer_name = #{customer_name}
+    and customer_pwd = #{customer_pwd}
+    and is_delete=0
+  </select>
+  
+  <insert id="insertCustomerInfo" parameterType="com.eshop.webapp.m.customer.model.Customer" useGeneratedKeys="true" keyProperty="id" >
+    insert into crm_customer (customer_name, customer_pwd, 
+      customer_true_name, shop_name, shop_address, 
+      recruit_code, is_valid, 
+      insert_time, insert_user)
+    values (#{customer_name}, #{customer_pwd}, 
+      #{customer_true_name}, #{shop_name}, #{shop_address}, 
+      #{recruit_code}, #{is_valid}, 
+      NOW(), #{insert_user})
+  </insert>
+  
+  <select id="selectCustomerCount" resultType="int" parameterType="map" >
+  	select 
+    count(1)
+    from crm_customer
+    <where>
+    	 is_delete=0
+    	<if test="customer_name != null">
+    		and customer_name = #{customer_name}
+    	</if>
+    </where>
+  </select>
+  
+  <select id="selectCustomerInfoById" resultType="com.eshop.webapp.m.customer.model.Customer" parameterType="map">
+  	select 
+    <include refid="Base_Column_List" />
+    from crm_customer
+    where id = #{customer_id}
+    and is_delete=0
+  </select>
+  
+</mapper>

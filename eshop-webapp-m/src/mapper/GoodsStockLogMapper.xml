@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GoodsStockLogMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, sku_id, shipping_level, stock_change_type, stock_change_num, old_stock, new_stock, 
+    insert_time, insert_user
+  </sql>
+  
+  <insert id="insertGoodsStockLog" parameterType="com.eshop.webapp.m.goods.model.GoodsStockLog" >
+    insert into info_goods_stock_log (id, sku_id, shipping_level, 
+      stock_change_type, stock_change_num, old_stock, 
+      new_stock, insert_time, insert_user
+      )
+    values (#{id,jdbcType=INTEGER}, #{sku_id,jdbcType=INTEGER}, #{shipping_level,jdbcType=VARCHAR}, 
+      #{stock_change_type,jdbcType=VARCHAR}, #{stock_change_num,jdbcType=INTEGER}, #{old_stock,jdbcType=INTEGER}, 
+      #{new_stock,jdbcType=INTEGER}, #{insert_time,jdbcType=TIMESTAMP}, #{insert_user,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+</mapper>

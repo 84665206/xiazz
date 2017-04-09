@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GoodsSkuMapper">
+  
+  <sql id="Base_Column_List">
+    id, sku_code, goods_code, goods_name, goods_varieties, goods_spec, goods_origin, 
+    goods_unit, other_explain, goods_shipping, stock_num, sale_price, label_price, cost_price, 
+    is_offline, is_hide, is_valid, memo, insert_time, insert_user, update_time, update_user, 
+    is_delete
+  </sql>
+  
+  <insert id="insertGoodsSku" parameterType="com.eshop.webapp.m.goods.model.GoodsSku">
+    insert into info_goods_sku (id, sku_code, goods_code, 
+      goods_name, goods_varieties, goods_spec, 
+      goods_origin, goods_unit, other_explain, 
+      goods_shipping, stock_num, sale_price, 
+      label_price, cost_price, is_offline, 
+      is_hide, is_valid, memo, 
+      insert_time, insert_user, update_time, 
+      update_user, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{sku_code,jdbcType=VARCHAR}, #{goods_code,jdbcType=VARCHAR}, 
+      #{goods_name,jdbcType=VARCHAR}, #{goods_varieties,jdbcType=VARCHAR}, #{goods_spec,jdbcType=VARCHAR}, 
+      #{goods_origin,jdbcType=VARCHAR}, #{goods_unit,jdbcType=VARCHAR}, #{other_explain,jdbcType=VARCHAR}, 
+      #{goods_shipping,jdbcType=VARCHAR}, #{stock_num,jdbcType=INTEGER}, #{sale_price,jdbcType=DECIMAL}, 
+      #{label_price,jdbcType=DECIMAL}, #{cost_price,jdbcType=DECIMAL}, #{is_offline,jdbcType=TINYINT}, 
+      #{is_hide,jdbcType=TINYINT}, #{is_valid,jdbcType=TINYINT}, #{memo,jdbcType=VARCHAR}, 
+      #{insert_time,jdbcType=TIMESTAMP}, #{insert_user,jdbcType=VARCHAR}, #{update_time,jdbcType=TIMESTAMP}, 
+      #{update_user,jdbcType=VARCHAR}, #{is_delete,jdbcType=TINYINT})
+  </insert>
+  
+  <select id="selectGoodsSkuBySkuId" parameterType="map" resultType="com.eshop.webapp.m.goods.model.GoodsSku">
+  	SELECT g.sku_code, g.goods_code, g.goods_name, g.goods_origin, g.goods_shipping, 
+	g.goods_spec, g.goods_unit, g.goods_varieties, g.cost_price, g.id, g.is_hide, 
+	g.is_offline, g.label_price, g.sale_price, g.stock_num, origin.attr_name goods_origin_name,
+	shipping.attr_name goods_shipping_name, spec.attr_name goods_spec_name, 
+	varieties.attr_name goods_varieties_name
+	FROM info_goods_sku g
+	LEFT JOIN info_goods_attribute origin ON origin.attr_code=g.goods_origin
+	LEFT JOIN info_goods_attribute shipping ON shipping.attr_code=g.goods_shipping
+	LEFT JOIN info_goods_attribute spec ON spec.attr_code=g.goods_spec
+	LEFT JOIN info_goods_attribute varieties ON varieties.attr_code=g.goods_varieties
+	WHERE g.id = #{sku_id}
+  </select>
+  
+  <select id="selectGoodsSkuByGoodsCode" parameterType="map" resultType="com.eshop.webapp.m.goods.model.GoodsSku">
+  	SELECT g.sku_code, g.goods_code, g.goods_name, g.goods_origin, g.goods_shipping, 
+	g.goods_spec, g.goods_unit, g.goods_varieties, g.cost_price, g.id, g.is_hide, 
+	g.is_offline, g.label_price, g.sale_price, g.stock_num, origin.attr_name goods_origin_name,
+	shipping.attr_name goods_shipping_name, spec.attr_name goods_spec_name, 
+	varieties.attr_name goods_varieties_name
+	FROM info_goods_sku g
+	LEFT JOIN info_goods_attribute origin ON origin.attr_code=g.goods_origin
+	LEFT JOIN info_goods_attribute shipping ON shipping.attr_code=g.goods_shipping
+	LEFT JOIN info_goods_attribute spec ON spec.attr_code=g.goods_spec
+	LEFT JOIN info_goods_attribute varieties ON varieties.attr_code=g.goods_varieties
+	WHERE g.goods_code = #{goods_code}
+  </select>
+  
+  <update id="reduceStock" parameterType="map">
+  	update info_goods_sku set stock_num = (stock_num-${num})
+  	where (stock_num-${num})>=0
+  	and id = #{sku_id}
+  </update>
+  
+  <select id="selectGoodsStockByShippingLevel" parameterType="map" resultType="com.eshop.webapp.m.goods.model.GoodsSku">
+  	SELECT goods_shipping, SUM(stock_num) stock_num FROM info_goods_sku 
+  	WHERE is_offline=0 
+  	AND is_valid=1 
+  	AND is_delete=0
+  	GROUP BY goods_shipping
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AreaInfoMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, area_name, area_type, parent_id
+  </sql>
+ 
+  <select id="selectAreaInfoList" resultType="com.eshop.webapp.m.order.model.AreaInfo" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from info_area
+    <where>
+    	<if test="parent_id != null">
+    		parent_id = #{parent_id}
+    	</if>
+    	<if test="area_type != null">
+    		and area_type = #{area_type}
+    	</if>
+    </where>
+  </select>
+  
+  <insert id="insertAreaInfo" parameterType="com.eshop.webapp.m.order.model.AreaInfo" >
+    insert into info_area (area_name, area_type, 
+      parent_id)
+    values (#{area_name,jdbcType=VARCHAR}, #{area_type,jdbcType=TINYINT}, 
+      #{parent_id,jdbcType=INTEGER})
+  </insert>
+  
+</mapper>

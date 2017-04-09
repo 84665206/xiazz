@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="PayLogMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, pay_handle_type, pay_body, pay_url, deal_code, pay_change, verify_result, pay_ip, 
+    customer_id, insert_time
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultType="com.eshop.webapp.m.pay.model.PayLog" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from pay_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insertPayLog" parameterType="com.eshop.webapp.m.pay.model.PayLog" >
+    insert into pay_log (id, pay_handle_type, pay_body, 
+      pay_url, deal_code, pay_change, 
+      verify_result, pay_ip, customer_id, 
+      insert_time)
+    values (#{id,jdbcType=INTEGER}, #{pay_handle_type,jdbcType=TINYINT}, #{pay_body,jdbcType=VARCHAR}, 
+      #{pay_url,jdbcType=VARCHAR}, #{deal_code,jdbcType=VARCHAR}, #{pay_change,jdbcType=VARCHAR}, 
+      #{verify_result,jdbcType=TINYINT}, #{pay_ip,jdbcType=VARCHAR}, #{customer_id,jdbcType=INTEGER}, 
+      #{insert_time,jdbcType=TIMESTAMP})
+  </insert>
+  
+</mapper>

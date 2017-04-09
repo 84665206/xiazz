@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CustomerDeliveryMapper" >
+ 
+  <sql id="Base_Column_List" >
+    id, customer_id, consignee, province, city, district, address, tel, mobile, is_default
+  </sql>
+  
+  <select id="selectCustomerDeliveryByCustomerId" resultType="com.eshop.webapp.m.customer.model.CustomerDelivery" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from crm_customer_delivery
+    where customer_id = #{customer_id}
+    and is_delete=0
+    ORDER BY is_default DESC, insert_time DESC
+    LIMIT 5
+  </select>
+
+  <insert id="insertCustomerDelivery" parameterType="com.eshop.webapp.m.customer.model.CustomerDelivery" >
+    insert into crm_customer_delivery (customer_id, consignee, 
+      province, city, district, 
+      address, tel, mobile, 
+      insert_time, insert_user)
+    values (#{customer_id}, #{consignee}, 
+      #{province}, #{city}, #{district}, 
+      #{address}, #{tel}, #{mobile}, 
+      NOW(), #{insert_user})
+  </insert>
+  
+  <select id="selectCustomerDeliveryCount" resultType="int" parameterType="map" >
+  	select 
+    COUNT(1)
+    from crm_customer_delivery
+    where customer_id = #{customer_id}
+    and is_delete=0
+  </select>
+  
+  <update id="setDefaultDelivery" parameterType="map">
+  	update crm_customer_delivery set is_default = 1, update_time = now(), update_user= #{customer_name} where id = #{delivery_id} and customer_id= #{customer_id}
+  </update>
+  
+  <update id="cancelAllDefaultDelivery" parameterType="map">
+  	update crm_customer_delivery set is_default = 0, update_time = now(), update_user= #{customer_name} where customer_id = #{customer_id}
+  </update>
+  
+  <delete id="deleteCustomerDeliveryById" parameterType="map">
+  	update crm_customer_delivery set is_delete = 1, update_time = now(), update_user= #{customer_name} where id = #{delivery_id} and customer_id= #{customer_id}
+  </delete>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderBatchSendMapper" >
+  
+ 
+  <sql id="Base_Column_List" >
+    id, batch_sn, og_id, send_no, sku_id, sku_name, sku_num, sale_price, share_price, 
+    pay_status, need_pay_amount, need_send_time, pay_amount, pay_time, shipping_status, 
+    shipping_time, shipping_person, shipping_phone, memo, insert_time, insert_user
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultType="com.eshop.webapp.m.order.model.OrderBatchSend" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from ord_order_batch_send
+    where id = #{id}
+  </select>
+  
+  <insert id="insertOrderBatchSend" parameterType="com.eshop.webapp.m.order.model.OrderBatchSend" useGeneratedKeys="true" keyProperty="id">
+    insert into ord_order_batch_send (batch_sn, og_id, 
+      send_no, sku_id, sku_name, 
+      sku_num, sale_price, share_price, 
+      pay_status, need_pay_amount, need_send_time, 
+      pay_amount, pay_time, shipping_status, 
+      shipping_time, shipping_person, shipping_phone, 
+      memo, insert_time, insert_user, goods_code,
+      goods_origin, goods_shipping, goods_spec, goods_varieties,
+      goods_origin_name, goods_shipping_name, goods_spec_name, 
+      goods_varieties_name
+      )
+    values (#{batch_sn}, #{og_id}, 
+      #{send_no}, #{sku_id}, #{sku_name}, 
+      #{sku_num}, #{sale_price}, #{share_price}, 
+      #{pay_status}, #{need_pay_amount}, #{need_send_time}, 
+      #{pay_amount}, #{pay_time}, #{shipping_status}, 
+      #{shipping_time}, #{shipping_person}, #{shipping_phone}, 
+      #{memo}, NOW(), #{insert_user}, #{goods_code},
+      #{goods_origin}, #{goods_shipping}, #{goods_spec}, #{goods_varieties},
+      #{goods_origin_name}, #{goods_shipping_name}, #{goods_spec_name}, 
+      #{goods_varieties_name}
+      )
+  </insert>
+  
+</mapper>

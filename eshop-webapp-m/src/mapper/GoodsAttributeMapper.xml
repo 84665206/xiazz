@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GoodsAttributeMapper" >
+  
+  <sql id="Base_Column_List" >
+    id, attr_type_code, attr_type_name, attr_code, attr_name, attr_desc, is_valid, memo, 
+    insert_time, insert_user, update_time, update_user, is_delete
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultType="com.eshop.webapp.m.goods.model.GoodsAttribute" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from info_goods_attribute
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <insert id="insertGoodsAttribute" parameterType="com.eshop.webapp.m.goods.model.GoodsAttribute" >
+    insert into info_goods_attribute (id, attr_type_code, attr_type_name, 
+      attr_code, attr_name, attr_desc, 
+      is_valid, memo, insert_time, 
+      insert_user, update_time, update_user, 
+      is_delete)
+    values (#{id,jdbcType=INTEGER}, #{attr_type_code,jdbcType=VARCHAR}, #{attr_type_name,jdbcType=VARCHAR}, 
+      #{attr_code,jdbcType=VARCHAR}, #{attr_name,jdbcType=VARCHAR}, #{attr_desc,jdbcType=VARCHAR}, 
+      #{is_valid,jdbcType=TINYINT}, #{memo,jdbcType=VARCHAR}, #{insert_time,jdbcType=TIMESTAMP}, 
+      #{insert_user,jdbcType=VARCHAR}, #{update_time,jdbcType=TIMESTAMP}, #{update_user,jdbcType=VARCHAR}, 
+      #{is_delete,jdbcType=TINYINT})
+  </insert>
+  
+</mapper>
