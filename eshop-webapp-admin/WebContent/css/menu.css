@@ -1,0 +1,149 @@
+#showUserList
+{
+	height:350px;
+	overflow:auto;
+} 
+#contentDiv
+{
+ display:inline;
+ white-space: nowrap;
+}
+#contentDiv p
+{
+ display:inline-block;
+}
+#contentDiv ul
+{
+padding:20px;
+list-style-type:none;
+display:inline-block;
+			 
+}
+#contentDiv li
+{
+height:35px; 
+}
+
+.outter td.td_tree {
+	border-collapse: collapse;
+	padding: 10px;
+	vertical-align: top;
+	height: 550px;
+	min-width: 400px;
+}
+
+.outter td.right {
+	padding-left: 30px;
+}
+
+.ztree {
+	width: 100%;
+	border: 1px solid #c8c8c8;
+	height: inherit;
+	overflow: auto;
+}
+
+.ztree li button.add {
+	background-position: -144px 0;
+	margin-left: 2px;
+	margin-right: -1px;
+	vertical-align: top;
+}
+
+.outter #menu_info {
+	caption-side: top;
+}
+
+.outter #menu_info caption {
+	text-align: left;
+	font-size: larger;
+	color: #0085CC;
+	padding: 10px 0;
+}
+
+.outter #menu_info caption b {
+	font-size: larger;
+	color: #0085CC;
+}
+
+div#div_btn {
+	padding: 50px 0 0 20px;
+}
+
+tt#warn {
+	color: red;
+}
+
+table#menu_info  td {
+	padding: 6px 0 6px 20px;
+}
+table#menu_info td select {
+	width: 180px;
+}
+
+td #message {
+	display: none;
+	padding-left: 30px;
+	color: green;
+}
+
+div#rMenu {
+	position: fixed;
+	visibility: hidden;
+	background-color: #0085cc;
+	text-align: left;
+	padding: 2px;
+}
+
+div#rMenu ul {
+	margin: 0;
+	padding: 0;
+}
+
+div#rMenu ul li:hover {
+	background: #a8f2fe;
+	font-weight: bolder;
+}
+
+div#rMenu ul li {
+	margin: 1px 0;
+	padding: 2px 10px;
+	cursor: pointer;
+	list-style: none outside none;
+	background-color: #e8f2fe;
+}
+
+div.alert tt {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+div.alert strong {
+	color: red;
+}
+
+div.alert tt.root_style {
+	color: #882244
+}
+
+div.alert tt.menu_style {
+	color: blue
+}
+
+div.alert tt.not_menu_style {
+	color: black
+}
+
+div.alert tt.dep_style {
+	color: #aaa
+}
+div.alert tt.self_style {
+	color: purple
+}
+
+div.alert tt.public_style {
+	color: green
+}
+.normal {
+	font-weight: normal;
+}

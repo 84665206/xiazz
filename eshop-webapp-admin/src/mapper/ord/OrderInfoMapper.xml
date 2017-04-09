@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderInfoMapper">
+	<resultMap id="BaseResultMap" type="com.eshop.webapp.admin.ord.model.OrderInfo" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+		<id column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<id column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<id column="order_type" property="orderType" jdbcType="INTEGER" />
+		<id column="shipping_level" property="shippingLevel" jdbcType="VARCHAR" />
+		<id column="shipping_way" property="shippingWay" jdbcType="INTEGER" />
+		<id column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+		<id column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<id column="recruit_code" property="recruitCode" jdbcType="VARCHAR" />
+		<id column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<id column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<id column="shop_address" property="shopAddress" jdbcType="VARCHAR" />
+		<id column="customer_memo" property="customerMemo" jdbcType="VARCHAR" />
+		<id column="goods_sum" property="goodsSum" jdbcType="INTEGER" />
+		<id column="goods_amount" property="goodsAmount" jdbcType="DECIMAL" />
+		<id column="order_shipping_fee" property="orderShippingFee" jdbcType="DECIMAL" />
+		<id column="order_discount" property="orderDiscount" jdbcType="DECIMAL" />
+		<id column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+		<id column="order_memo" property="orderMemo" jdbcType="VARCHAR" />
+		<id column="pay_way" property="payWay" jdbcType="VARCHAR" />
+		<id column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<id column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<id column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+		<id column="need_pay_amount" property="needPayAmount" jdbcType="DECIMAL" />
+		<id column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+		<id column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+		<id column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+		<id column="receiver_state" property="receiverState" jdbcType="VARCHAR" />
+		<id column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
+		<id column="receiver_city" property="receiverCity" jdbcType="VARCHAR" />
+		<id column="receiver_district" property="receiverDistrict" jdbcType="VARCHAR" />
+		<id column="receiver_street" property="receiverStreet" jdbcType="VARCHAR" />
+		<id column="receiver_addr" property="receiverAddr" jdbcType="VARCHAR" />
+		
+		<id column="memo" property="memo" jdbcType="VARCHAR" />
+		<id column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<id column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="SumResultMap" type="com.eshop.webapp.admin.ord.model.OrderInfo" >
+		<id column="goods_sum" property="goodsSum" jdbcType="INTEGER" />
+		<id column="goods_amount" property="goodsAmount" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+   		id,order_sn,order_status,add_time,order_type,shipping_level,shipping_way,shipping_status,
+   		customer_id,customer_name,recruit_code,shop_name,shop_address,customer_memo,goods_sum,
+   		goods_amount,order_shipping_fee,order_discount,order_amount,order_memo,pay_way,pay_status,
+   		pay_time,pay_amount,need_pay_amount,receiver_name,receiver_mobile,receiver_phone,receiver_state,
+   		receiver_province,receiver_city,receiver_district,receiver_street,receiver_addr,
+   		memo,update_time,update_user,is_delete
+	</sql>
+	
+	<sql id="page_condition">
+		<where>
+				(is_delete is null or is_delete=0)
+			<if test="id!=null">
+				and id=${id}
+			</if>
+			<if test="orderSn != null"> 
+				and order_sn like '%${orderSn}%'
+			</if>
+			<if test="orderStatus != null"> 
+				and order_status = '${orderStatus}'
+			</if>
+			<if test="orderType != null"> 
+				and order_type = '${orderType}'
+			</if>
+			<if test="shippingLevel != null"> 
+				and shipping_level = '${shippingLevel}'
+			</if>
+			<if test="recruitCode != null"> 
+				and recruit_code = '${recruitCode}'
+			</if>
+			<if test="customerName != null"> 
+				and customer_name like '%${customerName}%'
+			</if>
+			<if test="receiverName != null"> 
+				and receiver_name like '%${receiverName}%'
+			</if>
+			<if test="receiverMobile != null"> 
+				and receiver_mobile = '${receiverMobile}'
+			</if>
+			<if test="orderDateStart != null"> 
+				and add_time &gt;= '${orderDateStart}'
+			</if>
+			<if test="orderDateEnd != null"> 
+				and add_time &lt;= '${orderDateEnd}'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="searchWithPage" parameterType="hashmap" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> 
+		from ord_order_info
+		<include refid="page_condition" />
+		order by id desc
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchWithPageCount" resultType="int" parameterType="map">
+		select count(1)
+		from ord_order_info
+		<include refid="page_condition" />
+	</select>
+	
+    <select id="searchWithList" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from ord_order_info
+		<include refid="page_condition" /> 
+		order by id desc
+    </select>
+
+    <select id="searchOrderSumData" parameterType="map" resultMap="SumResultMap">
+    	select sum(goods_amount) goods_amount,sum(goods_sum) goods_sum 
+    	from ord_order_info
+		<include refid="page_condition" />
+    </select>
+
+    <select id="searchOneById" parameterType="map" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from ord_order_info
+		where id = ${id}
+    </select>
+
+	<insert id="insertOne" parameterType="com.eshop.webapp.admin.ord.model.OrderInfo" useGeneratedKeys="true" keyProperty="id">
+		 insert into ord_order_info(
+			order_sn,order_status,add_time,order_type,shipping_level,shipping_way,shipping_status,
+	   		customer_id,customer_name,recruit_code,shop_name,shop_address,customer_memo,goods_sum,
+	   		goods_amount,order_shipping_fee,order_discount,order_amount,order_memo,pay_way,pay_status,
+	   		pay_time,pay_amount,need_pay_amount,receiver_name,receiver_mobile,receiver_phone,receiver_state,
+	   		receiver_province,receiver_city,receiver_district,receiver_street,receiver_addr,
+	   		memo,update_time,update_user,is_delete
+		 )
+		 values(
+			#{orderSn},#{orderStatus},#{addTime},#{orderType},#{shippingLevel},#{shippingWay},#{shippingStatus},
+			#{customerId},#{customerName},#{recruitCode},#{shopName},#{shopAddress},#{customerMemo},#{goodsSum},
+			#{goodsAmount},#{orderShippingFee},#{orderDiscount},#{orderAmount},#{orderMemo},#{payWay},#{payStatus},
+			#{payTime},#{payAmount},#{needPayAmount},#{receiverName},#{receiverMobile},#{receiverPhone},#{receiverState},
+			#{receiver_province},#{receiver_city},#{receiver_district},#{receiver_street},#{receiver_addr},
+			#{memo},now(),#{updateUser},#{isDelete}
+		)
+	</insert>
+
+	<update id="updateById" parameterType="com.eshop.webapp.admin.ord.model.OrderInfo" >
+	    update ord_order_info
+	    <set>
+	      <if test="shippingStatus != null" >
+	        shipping_status = #{shippingStatus},
+	      </if>
+	      <if test="payStatus != null" >
+	        pay_status = #{payStatus},
+	      </if>
+	      <if test="payTime != null" >
+	        pay_time = #{payTime},
+	      </if>
+	      <if test="payAmount != null" >
+	        pay_amount = #{payAmount},
+	      </if>
+	      <if test="needPayAmount != null" >
+	        need_pay_amount = #{needPayAmount},
+	      </if>
+	      <if test="memo != null" >
+	        memo = #{memo},
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time = #{updateTime},
+	      </if>
+	      <if test="updateUser != null" >
+	        update_user = #{updateUser},
+	      </if>
+	      <if test="isDelete != null" >
+	        is_delete = #{isDelete},
+	      </if>
+	    </set>
+	    where id = ${id}
+	</update>
+
+	<update id="updateApproveById" parameterType="com.eshop.webapp.admin.ord.model.OrderInfo" >
+		update ord_order_info set order_status=20,update_time=now(),update_user='${updateUser}'
+		where order_status=10 and id=${id}
+	</update>
+
+	<update id="updateCancelById" parameterType="com.eshop.webapp.admin.ord.model.OrderInfo" >
+		update ord_order_info set order_status=-99,update_time=now(),update_user='${updateUser}'
+		where order_status=10 and id=${id}
+	</update>
+
+	<update id="updateCompleteById" parameterType="com.eshop.webapp.admin.ord.model.OrderInfo" >
+		update ord_order_info set order_status=30,update_time=now(),update_user='${updateUser}'
+		where order_status=20 and id=${id}
+	</update>
+
+<!-- #########################删除语句########################################-->
+
+	<!-- 删除一般是逻辑删除，调用 update_userById-->
+	<delete id="deleteById" parameterType="java.lang.Integer" >
+	    delete from ord_order_info
+	    where id = ${id}
+	</delete>
+  
+</mapper>

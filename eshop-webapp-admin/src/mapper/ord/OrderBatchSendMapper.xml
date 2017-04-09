@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OrderBatchSendMapper">
+	<resultMap id="BaseResultMap" type="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="batch_sn" property="batchSn" jdbcType="VARCHAR" />
+		<id column="og_id" property="ogId" jdbcType="INTEGER" />
+		<id column="send_no" property="sendNo" jdbcType="INTEGER" />
+		<id column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<id column="sku_name" property="skuName" jdbcType="VARCHAR" />
+		<id column="sku_num" property="skuNum" jdbcType="INTEGER" />
+		<id column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+		<id column="share_price" property="sharePrice" jdbcType="DECIMAL" />
+		<id column="goods_varieties_name" property="goodsVarietiesName" jdbcType="VARCHAR" />
+		<id column="goods_spec_name" property="goodsSpecName" jdbcType="VARCHAR" />
+		<id column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<id column="need_pay_amount" property="needPayAmount" jdbcType="DECIMAL" />
+		<id column="need_send_time" property="needSendTime" jdbcType="TIMESTAMP" />
+		<id column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+		<id column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<id column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+		<id column="shipping_time" property="shippingTime" jdbcType="TIMESTAMP" />
+		<id column="shipping_person" property="shippingPerson" jdbcType="VARCHAR" />
+		<id column="shipping_phone" property="shippingPhone" jdbcType="VARCHAR" />
+		
+		<id column="memo" property="memo" jdbcType="VARCHAR" />
+		<id column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+		<id column="insert_user" property="insertUser" jdbcType="VARCHAR" />
+		<id column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<id column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+	</resultMap>
+
+	<resultMap id="MoreResultMap" type="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<id column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+		<id column="order_status" property="orderStatus" jdbcType="INTEGER" />
+		<id column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+		<id column="order_type" property="orderType" jdbcType="INTEGER" />
+		<id column="shipping_level" property="shippingLevel" jdbcType="VARCHAR" />
+		<id column="pay_way" property="payWay" jdbcType="VARCHAR" />
+		<id column="shipping_way" property="shippingWay" jdbcType="INTEGER" />
+		<id column="customer_id" property="customerId" jdbcType="INTEGER" />
+		<id column="customer_name" property="customerName" jdbcType="VARCHAR" />
+		<id column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<id column="goods_sum" property="goodsSum" jdbcType="INTEGER" />
+		<id column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+		<id column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+		<id column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
+		<id column="receiver_city" property="receiverCity" jdbcType="VARCHAR" />
+		<id column="receiver_district" property="receiverDistrict" jdbcType="VARCHAR" />
+		<id column="receiver_addr" property="receiverAddr" jdbcType="VARCHAR" />
+		
+		<id column="batch_id" property="batchId" jdbcType="INTEGER" />
+		<id column="batch_sn" property="batchSn" jdbcType="VARCHAR" />
+		<id column="send_no" property="sendNo" jdbcType="INTEGER" />
+		<id column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<id column="sku_name" property="skuName" jdbcType="VARCHAR" />
+		<id column="goods_varieties_name" property="goodsVarietiesName" jdbcType="VARCHAR" />
+		<id column="goods_spec_name" property="goodsSpecName" jdbcType="VARCHAR" />
+		<id column="sku_num" property="skuNum" jdbcType="INTEGER" />
+		<id column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+		<id column="batch_amount" property="batchAmount" jdbcType="DECIMAL" />
+		<id column="need_send_time" property="needSendTime" jdbcType="TIMESTAMP" />
+		<id column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<id column="need_pay_amount" property="needPayAmount" jdbcType="DECIMAL" />
+		<id column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+		<id column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+		<id column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+		<id column="shipping_person" property="shippingPerson" jdbcType="VARCHAR" />
+		<id column="shipping_phone" property="shippingPhone" jdbcType="VARCHAR" />
+		<id column="shipping_time" property="shippingTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="SumResultMap" type="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+		<id column="sku_num" property="skuNum" jdbcType="INTEGER" />
+		<id column="batch_amount" property="batchAmount" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<resultMap id="PayInfoResultMap" type="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+		<id column="batch_id" property="batchId" jdbcType="INTEGER" />
+		<id column="batch_sn" property="batchSn" jdbcType="VARCHAR" />
+		<id column="pay_status" property="payStatus" jdbcType="INTEGER" />
+		<id column="need_pay_amount" property="needPayAmount" jdbcType="DECIMAL" />
+		<id column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+		<id column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+   		id,batch_sn,og_id,send_no,sku_id,sku_name,sku_num,sale_price,share_price,goods_varieties_name,goods_spec_name,
+   		pay_status,need_pay_amount,need_send_time,pay_amount,pay_time,shipping_status,shipping_time,shipping_person,shipping_phone,
+   		memo,insert_time,insert_user,update_time,update_user,is_delete
+	</sql>
+	
+	<sql id="page_condition">
+		<where>
+				(is_delete is null or is_delete=0)
+			<if test="id!=null">
+				and id=${id}
+			</if>
+			<if test="orderId!=null">
+				and og_id in (select id from ord_order_goods og	where og.order_id=${orderId})
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="More_Column_List" >
+   		oi.id order_id,oi.order_sn,oi.order_status,oi.add_time,oi.order_type,oi.shipping_level,oi.pay_way,
+		oi.shipping_way,oi.customer_id,oi.customer_name,oi.shop_name,oi.goods_sum,oi.receiver_name,
+		oi.receiver_mobile,oi.receiver_province,oi.receiver_city,oi.receiver_district,oi.receiver_addr,
+		os.id batch_id,os.batch_sn,os.send_no,os.sku_id,os.sku_name,os.goods_varieties_name,os.goods_spec_name,
+		os.sku_num,os.sale_price,os.sku_num*os.sale_price batch_amount,os.need_send_time,os.pay_status,os.need_pay_amount,
+		os.pay_amount,os.pay_time,os.shipping_status,os.shipping_person,os.shipping_phone,os.shipping_time
+	</sql>
+	
+	<sql id="More_condition">
+		<where>
+				(oi.order_status &gt; 10)
+			<if test="shippingStatus != null">
+				and os.shipping_status=${shippingStatus}
+			</if>
+			<if test="batchId != null">
+				and os.id=${batchId}
+			</if>
+			<if test="batchSn != null">
+				and os.batch_sn='${batchSn}'
+			</if>
+			<if test="orderSn != null">
+				and oi.order_sn='${orderSn}'
+			</if>
+			<if test="receiverName != null"> 
+				and oi.receiver_name like '%${receiverName}%'
+			</if>
+			<if test="receiverMobile != null"> 
+				and oi.receiver_mobile = '${receiverMobile}'
+			</if>
+			<if test="needSendStart != null"> 
+				and os.need_send_time &gt;= '${needSendStart}'
+			</if>
+			<if test="needSendEnd != null"> 
+				and os.need_send_time &lt;= '${needSendEnd}'
+			</if>
+			<if test="orderDateStart != null"> 
+				and oi.add_time &gt;= '${orderDateStart}'
+			</if>
+			<if test="orderDateEnd != null"> 
+				and oi.add_time &lt;= '${orderDateEnd}'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="searchWithPage" parameterType="hashmap" resultMap="MoreResultMap">
+		select <include refid="More_Column_List" /> 
+		from ord_order_info oi
+		inner join ord_order_goods og on oi.id=og.order_id
+		inner join ord_order_batch_send os on og.id=os.og_id
+		<include refid="More_condition" />
+		order by os.need_send_time,os.send_no,oi.add_time
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchWithPageCount" resultType="int" parameterType="map">
+		select count(1)
+		from ord_order_info oi
+		inner join ord_order_goods og on oi.id=og.order_id
+		inner join ord_order_batch_send os on og.id=os.og_id
+		<include refid="More_condition" />
+	</select>
+	
+    <select id="searchOrderSendSumData" parameterType="map" resultMap="SumResultMap">
+    	select sum(os.sku_num) sku_num,sum(os.sku_num*os.sale_price) batch_amount
+		from ord_order_info oi
+		inner join ord_order_goods og on oi.id=og.order_id
+		inner join ord_order_batch_send os on og.id=os.og_id
+		<include refid="More_condition" />
+    </select>
+	
+    <select id="searchWithList" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from ord_order_batch_send
+		<include refid="page_condition" /> 
+		order by id
+    </select>
+
+    <select id="searchOneById" parameterType="map" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from ord_order_batch_send
+		where id = ${id}
+    </select>
+
+    <select id="searchOneMoreById" parameterType="map" resultMap="MoreResultMap">
+    	select <include refid="More_Column_List" /> 
+		from ord_order_info oi
+		inner join ord_order_goods og on oi.id=og.order_id
+		inner join ord_order_batch_send os on og.id=os.og_id
+		where os.id=${batchId}
+    </select>
+
+    <select id="searchPayInfoByBatchId" parameterType="map" resultMap="PayInfoResultMap">
+		select obs.id batch_id,obs.batch_sn,obs.pay_status,obs.need_pay_amount,obs.pay_amount,obs.shipping_status,oog.order_id 
+		from ord_order_batch_send obs 
+		left join ord_order_goods oog on obs.og_id=oog.id
+		where obs.og_id in (
+			select id from ord_order_goods 
+			where order_id = (
+				select order_id from ord_order_goods 
+				where id = (select og_id from ord_order_batch_send where id = ${batchId})
+			)
+		)
+    </select>
+
+	<insert id="insertOne" parameterType="com.eshop.webapp.admin.ord.model.OrderBatchSend" useGeneratedKeys="true" keyProperty="id">
+		 insert into ord_order_batch_send(
+			batch_sn,og_id,send_no,sku_id,sku_name,sku_num,sale_price,share_price,
+   			pay_status,need_pay_amount,need_send_time,pay_amount,pay_time,shipping_status,shipping_time,shipping_person,shipping_phone,
+   			memo,insert_time,insert_user,update_time,update_user,is_delete
+		 )
+		 values(
+			#{batchSn},#{ogId},#{sendNo},#{skuId},#{skuName},#{skuNum},#{salePrice},
+			#{sharePrice},#{payStatus},#{needPayAmount},#{needSendTime},#{payAmount},#{payTime},#{shippingStatus},
+			#{shippingTime},#{shippingPerson},#{shippingPhone},
+			#{memo},now(),#{insertUser},now(),#{updateUser},#{isDelete}
+		)
+	</insert>
+
+	<update id="updateById" parameterType="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+	    update ord_order_batch_send
+	    <set>
+	      <if test="payStatus != null" >
+	        pay_status = #{payStatus},
+	      </if>
+	      <if test="payAmount != null" >
+	        pay_amount = #{payAmount},
+	      </if>
+	      <if test="needPayAmount != null" >
+	        need_pay_amount = #{needPayAmount},
+	      </if>
+	      <if test="shippingTime != null" >
+	        shipping_time = #{shippingTime},
+	      </if>
+	      <if test="shippingStatus != null" >
+	        shipping_status = #{shippingStatus},
+	      </if>
+	      <if test="shippingPerson != null" >
+	        shipping_person = #{shippingPerson},
+	      </if>
+	      <if test="shippingPhone != null" >
+	        shipping_phone = #{shippingPhone},
+	      </if>
+	      <if test="memo != null" >
+	        memo = #{memo},
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time = #{updateTime},
+	      </if>
+	      <if test="updateUser != null" >
+	        update_user = #{updateUser},
+	      </if>
+	      <if test="isDelete != null" >
+	        is_delete = #{isDelete},
+	      </if>
+	    </set>
+	    where id = ${id}
+		<if test="fromShippingStatus != null"> 
+			and shipping_status = '${fromShippingStatus}'
+		</if>
+	</update>
+
+	<update id="updateApproveById" parameterType="com.eshop.webapp.admin.ord.model.OrderBatchSend" >
+		update ord_order_batch_send set shipping_status=1,update_time=now(),update_user='${updateUser}'
+		where (shipping_status is null or shipping_status=0)
+		and og_id in (select id from ord_order_goods og	where og.order_id=${orderId})
+	</update>
+
+<!-- #########################删除语句########################################-->
+
+	<!-- 删除一般是逻辑删除，调用 update_userById-->
+	<delete id="deleteById" parameterType="java.lang.Integer" >
+	    delete from ord_order_batch_send
+	    where id = ${id}
+	</delete>
+  
+</mapper>

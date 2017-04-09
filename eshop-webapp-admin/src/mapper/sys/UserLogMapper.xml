@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserLogMapper" >
+
+<sql id="user_log_condition">
+	<where>
+		<if test="id!=null"> and id=#{id}</if>
+		<if test="user_name != null"> and user_name like '%${user_name}%'</if>
+		<if test="user_ip != null"> and user_ip like '%${user_ip}%'</if>
+		<if test="login_time != null"> and login_time = #{login_time}</if>
+		<if test="beginDate != null">and login_time >= #{beginDate}</if>
+		<if test="endDate != null"> <![CDATA[and login_time <= #{endDate}]]></if>
+		<if test="login_result != null"> and login_result = #{login_result}</if>
+		<if test="memo != null"> and memo like '%${memo}%'</if>
+	</where>
+</sql>
+
+
+	  <insert id="insertUserLog" parameterType="com.eshop.webapp.admin.sys.model.UserLog" >
+	  	
+		 INSERT INTO sys_user_log(
+			user_name,
+			user_ip,
+			login_time,
+			login_result,
+			memo
+		)
+		VALUES
+			(
+				#{user_name}, #{user_ip},
+				now(), #{login_result}, #{memo}
+			)
+	  </insert>
+
+	<select id="searchUserLogWithPage" parameterType="hashmap" resultType="com.eshop.webapp.admin.sys.model.UserLog">
+	 	
+		select
+			  id,
+			  user_name,
+			  user_ip,
+			  login_time,
+			  login_result,
+			  memo
+		from
+			sys_user_log
+		<include refid="user_log_condition" />
+		order by login_time desc
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchUserLogCount" resultType="int" parameterType="map">
+	 	
+		select
+			count(*)
+		from
+			sys_user_log
+		<include refid="user_log_condition" />
+	</select>
+</mapper>

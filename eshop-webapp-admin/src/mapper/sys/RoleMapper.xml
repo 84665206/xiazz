@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="RoleMapper">
+
+	<sql id="full_column_List">
+		id, role_name, description, create_user, create_date
+	</sql>
+
+	<sql id="base_column_List">
+		id, role_name
+	</sql>
+	<!-- 获取所有的角色 -->
+	<select id="listAllRoles" resultType="com.eshop.webapp.admin.sys.model.Role">
+		SELECT <include refid="base_column_List"/>
+		FROM sys_role
+		WHERE is_delete=0
+	</select>
+
+	<select id="listLeftRole" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.Role">
+		select <include refid="base_column_List"/>
+		from sys_role
+		where id not in 
+		<foreach collection="userIdList" index="index" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</select>
+	
+	<select id="listRightRole" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.Role">
+		select <include refid="base_column_List"/>
+		from sys_role
+		where id in 
+		<foreach collection="userIdList" index="index" item="item" open="(" close=")" separator=",">
+			${item}
+		</foreach>
+	</select>
+	
+	<!-- 角色查询 -->
+	<sql id="role_where_clause">
+		<where>
+			<if test="is_delete != null">
+				is_delete = #{is_delete}
+			</if>
+			<if test="role_name !=null and role_name !='' ">
+				and role_name like '%${role_name}%'
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 根据Id 查询角色 -->
+	<select id="searchRoleById" parameterType="int" resultType="com.eshop.webapp.admin.sys.model.Role">
+  	
+		select
+		<include refid="base_column_List" />
+		from sys_role
+		where id=#{id}
+	</select>
+	<!-- 统计角色记录数 -->
+	<select id="searchRoleCount" parameterType="map" resultType="java.lang.Integer">
+  	
+		select count(*) from sys_role
+		<include refid="role_where_clause" />
+	</select>
+
+	<!-- 获取角色分页数据 -->
+	<select id="searchRoleWithPage" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.Role">
+  	
+		select <include refid="full_column_List" />
+		from sys_role
+		<include refid="role_where_clause" />
+		order by id desc
+		limit #{offset},#{pageSize}
+	</select>
+	
+	<!-- 删除角色 -->
+	<delete id="deleteRoles" parameterType="map">
+  	
+		delete from sys_role 
+		where id in 
+		<foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+	</delete>
+
+	<insert id="insertRole" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+  	
+		insert into sys_role
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="role_name != null">
+				role_name,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="create_user != null">
+				create_user,
+			</if>
+			<if test="create_date != null">
+				create_date,
+			</if>
+			
+			<if test="is_delete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="role_name != null">
+				#{role_name},
+			</if>
+			<if test="description != null">
+				#{description},
+			</if>
+			<if test="create_user != null">
+				#{create_user},
+			</if>
+			<if test="create_date != null">
+				#{create_date},
+			</if>
+			<if test="is_delete != null">
+				#{is_delete},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateRole" parameterType="Role">
+		update sys_role
+		<set>
+			<if test="role_name != null">
+				role_name = #{role_name},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="update_user != null">
+				update_user = #{update_user},
+			</if>
+			<if test="update_date != null">
+				update_date = NOW(),
+			</if>
+			<if test="is_delete != null">
+				is_delete = #{is_delete},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

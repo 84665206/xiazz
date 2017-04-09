@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MenuMapper">
+
+	<sql id="Base_Column_List">
+		id, en_name, ch_name, parent_id, menu_uri, sort_index, menu_type, description, menu_level, dependence, 
+		create_user, create_date, update_user, update_date, is_delete
+	</sql>
+	<sql id="Base_Where_Clause" >
+		<where>
+	    	is_delete = 0
+		    <if test="id!=null">
+		    	and id = #{id,jdbcType=INTEGER}
+		    </if>
+		    <if test="menuUri!=null">
+		    	and menu_uri = #{menuUri,jdbcType=VARCHAR}
+		    </if>
+		    <if test="parentId!=null">
+		    	and parent_id = #{parentId,jdbcType=INTEGER}
+		    </if>
+	    </where>
+	</sql>
+	
+	<select id="selectMenuListForUser" parameterType="hashmap" resultType="com.eshop.webapp.admin.sys.model.Menu">
+	    select distinct sm.id,sm.en_name,sm.ch_name,sm.parent_id,sm.menu_uri,sm.sort_index,sm.menu_type,sm.menu_level,sm.dependence,sm.description
+	    from sys_user su, sys_role_user sru, sys_role sr, sys_role_menu srm, sys_menu sm
+		where su.id = sru.user_id and sru.role_id = sr.id and sr.id = srm.role_id and srm.menu_id = sm.id
+		and sm.is_delete = 0
+	    and su.id = #{userId,jdbcType=INTEGER}
+	    <if test="menuUri!=null">
+	    and sm.menu_uri = #{menuUri,jdbcType=VARCHAR}
+	    </if>
+	    order by sm.menu_level,sm.menu_type,sm.sort_index
+	</select>
+  
+	<select id="selectAllMenuList" parameterType="hashmap" resultType="com.eshop.webapp.admin.sys.model.Menu">
+	    select <include refid="Base_Column_List" />
+	    from sys_menu
+	    order by menu_level,parent_id,menu_type,sort_index  
+	</select>
+  
+	<select id="selectMenuList" parameterType="hashmap" resultType="com.eshop.webapp.admin.sys.model.Menu">
+	  	
+	    select <include refid="Base_Column_List" />
+	    from sys_menu
+	    <include refid="Base_Where_Clause" />
+	</select>
+  	<insert id="insert" parameterType="Menu" useGeneratedKeys="true" keyProperty="id">
+  		INSERT INTO sys_menu(en_name, ch_name, parent_id, menu_uri, sort_index, menu_type, description, menu_level, dependence, 
+		create_user, create_date, is_delete) 
+		VALUES(#{en_name},#{ch_name},#{parent_id},#{menu_uri},#{sort_index},#{menu_type},#{description},#{menu_level},#{dependence},
+		#{create_user},NOW(),#{is_delete})
+		<selectKey resultType="Integer" keyProperty="id">
+ 			<![CDATA[ SELECT LAST_INSERT_ID() AS ID  ]]>
+	 	</selectKey>
+  	</insert>
+  	
+	<update id="update" parameterType="Menu">
+		
+		UPDATE sys_menu
+		SET description=#{description},menu_type=#{menu_type},menu_level=#{menu_level},menu_uri=#{menu_uri},sort_index=#{sort_index},
+			ch_name=#{ch_name},update_user=#{update_user},update_date=#{update_date},parent_id=#{parent_id}
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="deleteMenuById" parameterType="map">
+		DELETE FROM sys_menu WHERE id=#{id}
+	</delete>
+	
+	<delete id="deleteMenuByIds" parameterType="map">
+		DELETE FROM sys_menu WHERE id in (${ids})
+	</delete>
+</mapper>

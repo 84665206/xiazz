@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<!-- 系统管理 -->
+		<typeAlias alias="User" type="com.eshop.webapp.admin.sys.model.User" />
+		<typeAlias alias="Role" type="com.eshop.webapp.admin.sys.model.Role" />
+		<typeAlias alias="OperationLog" type="com.eshop.webapp.admin.sys.model.OperationLog" />
+		<typeAlias alias="UserLog" type="com.eshop.webapp.admin.sys.model.UserLog" />
+		<typeAlias alias="Menu" type="com.eshop.webapp.admin.sys.model.Menu" />
+		<typeAlias alias="RoleMenu" type="com.eshop.webapp.admin.sys.model.RoleMenu"/>
+		<typeAlias alias="RoleUser" type="com.eshop.webapp.admin.sys.model.RoleUser"/>
+		
+		<!-- 商品管理 -->
+		<typeAlias alias="GoodsAttribute" type="com.eshop.webapp.admin.goods.model.GoodsAttribute" />
+		<typeAlias alias="GoodsPrice" type="com.eshop.webapp.admin.goods.model.GoodsPrice" />
+		<typeAlias alias="GoodsSku" type="com.eshop.webapp.admin.goods.model.GoodsSku" />
+		<typeAlias alias="GoodsStock" type="com.eshop.webapp.admin.goods.model.GoodsStock" />
+		<typeAlias alias="GoodsStockLog" type="com.eshop.webapp.admin.goods.model.GoodsStockLog" />
+		
+		<!-- 客户管理 -->
+		<typeAlias alias="Customer" type="com.eshop.webapp.admin.crm.model.Customer" />
+		
+		<!-- 订单管理 -->
+		<typeAlias alias="OrderInfo" type="com.eshop.webapp.admin.ord.model.OrderInfo" />
+		<typeAlias alias="OrderInfo" type="com.eshop.webapp.admin.ord.model.OrderGoods" />
+		<typeAlias alias="OrderInfo" type="com.eshop.webapp.admin.ord.model.OrderBatchSend" />
+		
+	</typeAliases>
+	<plugins>                
+		<plugin interceptor="com.eshop.webapp.admin.util.SqlMonitorInterceptor">
+		</plugin>
+	</plugins>
+</configuration>

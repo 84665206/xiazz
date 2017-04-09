@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GoodsSkuMapper">
+	<resultMap id="BaseResultMap" type="com.eshop.webapp.admin.goods.model.GoodsSku" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="sku_code" property="skuCode" jdbcType="VARCHAR" />
+		<id column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<id column="goods_varieties" property="goodsVarieties" jdbcType="VARCHAR" />
+		<id column="goods_spec" property="goodsSpec" jdbcType="VARCHAR" />
+		<id column="goods_origin" property="goodsOrigin" jdbcType="VARCHAR" />
+		<id column="goods_unit" property="goodsUnit" jdbcType="VARCHAR" />
+		<id column="other_explain" property="otherExplain" jdbcType="VARCHAR" />
+		<id column="is_valid" property="isValid" jdbcType="INTEGER" />
+		
+		<id column="memo" property="memo" jdbcType="VARCHAR" />
+		<id column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+		<id column="insert_user" property="insertUser" jdbcType="VARCHAR" />
+		<id column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<id column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List" >
+   		id,sku_code,goods_name,goods_varieties,goods_spec,goods_origin,goods_unit,other_explain,is_valid,
+   		memo,insert_time,insert_user,update_time,update_user,is_delete
+	</sql>
+	
+	<sql id="page_condition">
+		<where>
+				is_delete=0
+			<if test="id!=null">
+				and id=${id}
+			</if>
+			<if test="skuCode != null"> 
+				and sku_code like '%${skuCode}%'
+			</if>
+			<if test="goodsName != null"> 
+				and goods_name like '%${goodsName}%'
+			</if>
+			<if test="goodsVarieties != null"> 
+				and goods_varieties = '${goodsVarieties}'
+			</if>
+			<if test="goodsSpec != null"> 
+				and goods_spec = '${goodsSpec}'
+			</if>
+			<if test="goodsOrigin != null"> 
+				and goods_origin = '${goodsOrigin}'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="searchWithPage" parameterType="hashmap" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> 
+		from info_goods_sku
+		<include refid="page_condition" />
+		order by id desc
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchWithPageCount" resultType="int" parameterType="map">
+		select count(1)
+		from info_goods_sku
+		<include refid="page_condition" />
+	</select>
+	
+    <select id="searchWithList" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from info_goods_sku
+		<include refid="page_condition" /> 
+		order by id desc
+    </select>
+
+    <select id="searchOneById" parameterType="map" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from info_goods_sku
+		where id = ${id}
+    </select>
+
+	<insert id="insertOne" parameterType="com.eshop.webapp.admin.goods.model.GoodsSku" useGeneratedKeys="true" keyProperty="id">
+		 insert into info_goods_sku(
+			sku_code,goods_name,goods_varieties,goods_spec,goods_origin,goods_unit,other_explain,is_valid,
+	   		memo,insert_time,insert_user,update_time,update_user,is_delete
+		 )
+		 values(
+			#{skuCode},#{goodsName},#{goodsVarieties},#{goodsSpec},#{goodsOrigin},#{goodsUnit},#{otherExplain},#{isValid},
+			#{memo},now(),#{insertUser},now(),#{updateUser},#{isDelete}
+		)
+	</insert>
+
+	<update id="updateById" parameterType="com.eshop.webapp.admin.goods.model.GoodsSku" >
+	    update info_goods_sku
+	    <set>
+	      <if test="goodsName != null" >
+	        goods_name = #{goodsName},
+	      </if>
+	      <if test="goodsVarieties != null" >
+	        goods_varieties = #{goodsVarieties},
+	      </if>
+	      <if test="goodsSpec != null" >
+	        goods_spec = #{goodsSpec},
+	      </if>
+	      <if test="goodsOrigin != null" >
+	        goods_origin = #{goodsOrigin},
+	      </if>
+	      <if test="goodsUnit != null" >
+	        goods_unit = #{goodsUnit},
+	      </if>
+	      <if test="otherExplain != null" >
+	        other_explain = #{otherExplain},
+	      </if>
+	      <if test="isValid != null" >
+	        is_valid = #{isValid},
+	      </if>
+	      <if test="memo != null" >
+	        memo = #{memo},
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time = #{updateTime},
+	      </if>
+	      <if test="updateUser != null" >
+	        update_user = #{updateUser},
+	      </if>
+	      <if test="isDelete != null" >
+	        is_delete = #{isDelete},
+	      </if>
+	    </set>
+	    where id = ${id}
+	</update>
+
+<!-- #########################删除语句########################################-->
+
+	<!-- 删除一般是逻辑删除，调用 update_userById-->
+	<delete id="deleteById" parameterType="java.lang.Integer" >
+	    delete from info_goods_sku
+	    where id = ${id}
+	</delete>
+  
+</mapper>

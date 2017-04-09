@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="OperationLogMapper">
+	<resultMap id="BaseResultMap" type="OperationLog">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="ip_addr" property="ipAddr" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="op_module" property="opModule" jdbcType="VARCHAR" />
+		<result column="op_page" property="opPage" jdbcType="VARCHAR" />
+		<result column="operation" property="operation" jdbcType="VARCHAR" />
+		<result column="op_result" property="opResult" jdbcType="SMALLINT" />
+		<association property="user" column="id"
+			resultMap="UserMapper.userMap">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+			<result column="fullName" property="fullName" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+	<insert id="insertOperationLog" parameterType="OperationLog" keyProperty="id" useGeneratedKeys="true">
+		<![CDATA[
+			insert into sys_user_operation_log(
+				user_id, ip_addr, create_time, op_module, op_page, operation, op_result
+			)
+			values(
+				#{userId,jdbcType=INTEGER}, #{ipAddr,jdbcType=VARCHAR},
+				now(), #{opModule,jdbcType=VARCHAR},
+				#{opPage,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR},
+				#{opResult,jdbcType=SMALLINT}
+		   	)
+		]]>
+	</insert>
+</mapper>

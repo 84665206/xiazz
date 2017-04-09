@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserMapper">
+	<sql id="user_page_condition">
+		<where>
+				is_delete=0
+			<if test="id!=null">
+				and id=#{id}
+			</if>
+			<if test="user_name != null"> 
+				and user_name like '%${user_name}%'
+			</if>
+			<if test="full_name != null"> 
+				and full_name like '%${full_name}%'
+			</if>
+			<if test="password != null"> 
+				and password like '%${password}%'
+			</if>
+			<if test="phone != null"> 
+				and phone like '%${phone}%'
+			</if>
+		</where>
+	</sql>
+	
+	<sql id="Base_Column_List" >
+   		id,user_name,password,pwd_terminal_time,full_name,
+		phone,mail,login_sum,is_valid,memo
+  </sql>
+	<select id="searchUserWithPage" parameterType="hashmap" resultType="com.eshop.webapp.admin.sys.model.User">
+		select <include refid="Base_Column_List" /> 
+		from sys_user
+		<include refid="user_page_condition" />
+		order by id desc
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchUserCount" resultType="int" parameterType="map">
+		select count(1)
+		from sys_user
+		<include refid="user_page_condition" />
+	</select>
+	
+    <select id="selectUserList" resultType="com.eshop.webapp.admin.sys.model.User" >
+    	select <include refid="Base_Column_List" /> 
+		from sys_user
+		<include refid="user_page_condition" /> 
+		order by user_name
+    </select>
+
+    <select id="getUserByUserName" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.User">
+    	select <include refid="Base_Column_List" /> 
+		from sys_user
+		where user_name = #{user_name}
+    </select>
+    <select id="getUserById" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.User">
+    	select <include refid="Base_Column_List" /> 
+		from sys_user
+		where id = #{id}
+    </select>
+
+    <select id="getUsersWithUserGroupRela" parameterType="int" resultType="com.eshop.webapp.admin.sys.model.User">
+    	select
+    	     user.id
+			,user.user_name
+			,user.full_name
+			,user.phone
+			,user.mail
+		from sys_user user
+		inner join sys_user_group_rela rela
+		on user.id= rela.user_id
+		where rela.group_id =#{group_id}
+		and user.is_delete=0
+    </select>
+
+	<insert id="insert" parameterType="com.eshop.webapp.admin.sys.model.User" useGeneratedKeys="true" keyProperty="id">
+	 INSERT INTO sys_user(
+			user_name,
+			password,
+			pwd_terminal_time,
+			full_name,
+			phone,
+			mail,
+			login_sum,
+			is_valid,
+			create_user,
+			create_date,
+			is_delete
+	 )
+	 VALUES(
+		#{user_name}, #{password},#{pwd_terminal_time},
+		#{full_name}, #{phone}, #{mail},
+		#{login_sum}, #{is_valid}, 
+		#{create_user}, now(), #{is_delete})
+	  </insert>
+
+   <update id="updateLoginSum" parameterType="map">
+   	update sys_user
+   	set login_sum = #{login_sum}, update_date= now()
+   	where id = #{id}
+   </update>
+
+   <update id="updateUserById" parameterType="com.eshop.webapp.admin.sys.model.User" >
+    update sys_user
+    <set>
+      <if test="user_name != null" >
+        user_name = #{user_name},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="pwd_terminal_time != null" >
+        pwd_terminal_time = #{pwd_terminal_time},
+      </if>
+      <if test="full_name != null" >
+        full_name = #{full_name},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone},
+      </if>
+      <if test="mail != null" >
+        mail = #{mail},
+      </if>
+      <if test="login_sum != null" >
+        login_sum = #{login_sum},
+      </if>
+      <if test="is_valid != null" >
+        is_valid = #{is_valid},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo},
+      </if>
+      <if test="create_user != null" >
+        create_user = #{create_user},
+      </if>
+      <if test="create_date != null" >
+        create_date = #{create_date},
+      </if>
+      <if test="update_user != null" >
+        update_user = #{update_user},
+      </if>
+      <if test="update_date != null" >
+        update_date = #{update_date},
+      </if>
+      <if test="is_delete != null" >
+        is_delete = #{is_delete},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+	
+	<select id="selectRoleUser" parameterType="map" resultType="com.eshop.webapp.admin.sys.model.User">
+		select su.id,su.user_name,su.full_name from sys_role_user sru
+		LEFT JOIN sys_user su ON sru.user_id=su.id
+		where role_id=#{role_id} 
+	</select>
+<!-- #########################删除语句########################################-->
+
+  <!-- 删除一般是逻辑删除，调用 update_userById-->
+   <delete id="deleteUserById" parameterType="java.lang.Integer" >
+    delete from sys_user
+    where id = #{id}
+  </delete>
+  
+  <update id="updateUserPassByUserName" parameterType="com.eshop.webapp.admin.sys.model.User" >
+	update sys_user
+	<set>
+		<if test="password != null" >
+			password = #{password},
+		</if>
+		<if test="update_user != null" >
+			update_user = #{update_user},
+		</if>
+		<if test="update_date != null" >
+			update_date = #{update_date},
+		</if>
+	</set>
+	where user_name = #{user_name}
+ </update>
+</mapper>

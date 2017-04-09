@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GoodsPriceMapper">
+	<resultMap id="BaseResultMap" type="com.eshop.webapp.admin.goods.model.GoodsPrice" >
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<id column="shipping_level" property="shippingLevel" jdbcType="VARCHAR" />
+		<id column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+		<id column="label_price" property="labelPrice" jdbcType="DECIMAL" />
+		<id column="cost_price" property="costPrice" jdbcType="DECIMAL" />
+		
+		<id column="memo" property="memo" jdbcType="VARCHAR" />
+		<id column="insert_time" property="insertTime" jdbcType="TIMESTAMP" />
+		<id column="insert_user" property="insertUser" jdbcType="VARCHAR" />
+		<id column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<id column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<id column="is_delete" property="isDelete" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="MoreResultMap" type="com.eshop.webapp.admin.goods.model.GoodsPrice" >
+		<id column="sku_id" property="skuId" jdbcType="INTEGER" />
+		<id column="sku_code" property="skuCode" jdbcType="VARCHAR" />
+		<id column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+		<id column="goods_varieties" property="goodsVarieties" jdbcType="VARCHAR" />
+		<id column="goods_spec" property="goodsSpec" jdbcType="VARCHAR" />
+		<id column="goods_origin" property="goodsOrigin" jdbcType="VARCHAR" />
+		<id column="goods_unit" property="goodsUnit" jdbcType="VARCHAR" />
+		
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="shipping_level" property="shippingLevel" jdbcType="VARCHAR" />
+		<id column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+		<id column="label_price" property="labelPrice" jdbcType="DECIMAL" />
+		<id column="cost_price" property="costPrice" jdbcType="DECIMAL" />
+		
+		<id column="goods_shipping" property="goodsShipping" jdbcType="VARCHAR" />
+		<id column="goods_varieties_desc" property="goodsVarietiesDesc" jdbcType="VARCHAR" />
+		<id column="goods_spec_desc" property="goodsSpecDesc" jdbcType="VARCHAR" />
+		<id column="goods_origin_desc" property="goodsOriginDesc" jdbcType="VARCHAR" />
+		<id column="goods_shipping_desc" property="goodsShippingDesc" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+   		id,sku_id,shipping_level,sale_price,label_price,cost_price,
+   		memo,insert_time,insert_user,update_time,update_user,is_delete
+	</sql>
+	
+	<sql id="More_Column_List" >
+   		g.id sku_id,g.sku_code,g.goods_name,g.goods_varieties,g.goods_spec,g.goods_origin,g.goods_unit,
+		g.goods_shipping,g.sale_price,g.label_price,g.cost_price,
+		a1.attr_name goods_varieties_desc,
+		a2.attr_name goods_spec_desc,
+		a3.attr_name goods_origin_desc,
+		a4.attr_name goods_shipping_desc
+	</sql>
+	
+	<sql id="page_condition">
+		<where>
+				g.is_delete=0 and g.is_valid=1
+			<if test="skuCode != null"> 
+				and g.sku_code like '%${skuCode}%'
+			</if>
+			<if test="goodsName != null"> 
+				and g.goods_name like '%${goodsName}%'
+			</if>
+			<if test="goodsVarieties != null"> 
+				and g.goods_varieties = '${goodsVarieties}'
+			</if>
+			<if test="goodsSpec != null"> 
+				and g.goods_spec = '${goodsSpec}'
+			</if>
+			<if test="goodsOrigin != null"> 
+				and g.goods_origin = '${goodsOrigin}'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="searchWithPage" parameterType="hashmap" resultMap="MoreResultMap">
+		select <include refid="More_Column_List" />
+		from info_goods_sku g 
+		left join info_goods_attribute a1 on a1.attr_type_code='info_goods_sku.goods_varieties' and a1.attr_code=g.goods_varieties
+		left join info_goods_attribute a2 on a2.attr_type_code='info_goods_sku.goods_spec' and a2.attr_code=g.goods_spec
+		left join info_goods_attribute a3 on a3.attr_type_code='info_goods_sku.goods_origin' and a3.attr_code=g.goods_origin
+		left join info_goods_attribute a4 on a4.attr_type_code='info_goods_sku.goods_shipping' and a4.attr_code=g.goods_shipping
+		<include refid="page_condition" />
+		order by g.goods_code,g.goods_varieties,g.goods_spec,g.goods_origin,g.goods_shipping
+		limit #{offset}, #{pageSize}
+	</select>
+	
+	<select id="searchWithPageCount" resultType="int" parameterType="map">
+		select count(1)
+		from info_goods_sku g 
+		left join info_goods_attribute a1 on a1.attr_type_code='info_goods_sku.goods_varieties' and a1.attr_code=g.goods_varieties
+		left join info_goods_attribute a2 on a2.attr_type_code='info_goods_sku.goods_spec' and a2.attr_code=g.goods_spec
+		left join info_goods_attribute a3 on a3.attr_type_code='info_goods_sku.goods_origin' and a3.attr_code=g.goods_origin
+		left join info_goods_attribute a4 on a4.attr_type_code='info_goods_sku.goods_shipping' and a4.attr_code=g.goods_shipping
+		<include refid="page_condition" />
+	</select>
+	
+    <select id="searchWithList" resultMap="MoreResultMap">
+    	select <include refid="More_Column_List" />
+		from info_goods_sku g 
+		left join info_goods_attribute a1 on a1.attr_type_code='info_goods_sku.goods_varieties' and a1.attr_code=g.goods_varieties
+		left join info_goods_attribute a2 on a2.attr_type_code='info_goods_sku.goods_spec' and a2.attr_code=g.goods_spec
+		left join info_goods_attribute a3 on a3.attr_type_code='info_goods_sku.goods_origin' and a3.attr_code=g.goods_origin
+		left join info_goods_attribute a4 on a4.attr_type_code='info_goods_sku.goods_shipping' and a4.attr_code=g.goods_shipping
+		<include refid="page_condition" />
+		order by g.goods_code,g.goods_varieties,g.goods_spec,g.goods_origin,g.goods_shipping
+    </select>
+
+    <select id="searchOneById" parameterType="map" resultMap="BaseResultMap">
+    	select <include refid="Base_Column_List" /> 
+		from info_goods_price
+		where id = ${id}
+    </select>
+
+	<insert id="insertOne" parameterType="com.eshop.webapp.admin.goods.model.GoodsPrice" useGeneratedKeys="true" keyProperty="id">
+		 insert into info_goods_price(
+			sku_id,shipping_level,sale_price,label_price,cost_price,
+			memo,insert_time,insert_user,update_time,update_user,is_delete
+		 )
+		 values(
+			#{skuId},#{shippingLevel},#{salePrice},#{labelPrice},#{costPrice},
+			#{memo},now(),#{insertUser},now(),#{updateUser},#{isDelete}
+		)
+	</insert>
+
+	<update id="updateById" parameterType="com.eshop.webapp.admin.goods.model.GoodsPrice" >
+	    update info_goods_sku
+	    <set>
+	      <if test="salePrice != null" >
+	        sale_price = #{salePrice},
+	      </if>
+	      <if test="labelPrice != null" >
+	        label_price = #{labelPrice},
+	      </if>
+	      <if test="costPrice != null" >
+	        cost_price = #{costPrice},
+	      </if>
+	      <if test="memo != null" >
+	        memo = #{memo},
+	      </if>
+	      <if test="updateTime != null" >
+	        update_time = #{updateTime},
+	      </if>
+	      <if test="updateUser != null" >
+	        update_user = #{updateUser},
+	      </if>
+	      <if test="isDelete != null" >
+	        is_delete = #{isDelete},
+	      </if>
+	    </set>
+	    where id = ${id}
+	</update>
+
+<!-- #########################删除语句########################################-->
+
+	<!-- 删除一般是逻辑删除，调用 update_userById-->
+	<delete id="deleteById" parameterType="java.lang.Integer" >
+	    delete from info_goods_price
+	    where id = ${id}
+	</delete>
+  
+</mapper>
