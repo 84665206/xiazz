@@ -118,7 +118,7 @@
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">产品名称</td>
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">品类</td>
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">规格</td>
-			<td style="border:solid 1px #ccc; color:#2A7AD2;">数量(kg)</td>
+			<td style="border:solid 1px #ccc; color:#2A7AD2;">数量(斤)</td>
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">单价(元)</td>
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">金额(元)</td>
 			<td style="border:solid 1px #ccc; color:#2A7AD2;">支付状态</td>
